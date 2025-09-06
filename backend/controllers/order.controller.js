@@ -13,7 +13,8 @@ const currency = 'INR'
 
 const placeOrder = async (req, res) => {
   try {
-    const { userId, amount, items, address } = req.body
+    const { userId } = req
+    const { amount, items, address } = req.body
     // console.log(userId);
 
     const orderData = {
@@ -79,25 +80,23 @@ const placeOrderRazorpay = async (req, res) => {
   }
 }
 
-const verifyRazorpay = async (req,res)=>{
+const verifyRazorpay = async (req, res) => {
   try {
-    const{userId,razorpay_order_id} = req.body
+    const { userId, razorpay_order_id } = req.body
 
-    const orderInfo = await razorpayinstance.orders.fetch(razorpay_order_id);
-    
-    if(orderInfo.status === 'paid'){
-      await orderModel.findByIdAndUpdate(orderInfo.receipt,{payment:true});
-      await userModel.findByIdAndUpdate(userId,{cartData:{}})
+    const orderInfo = await razorpayinstance.orders.fetch(razorpay_order_id)
 
-      res.json({success:true,message:"payment successful"})
-    }else{
-      res.josn({success:false,message:"payment fail"})
+    if (orderInfo.status === 'paid') {
+      await orderModel.findByIdAndUpdate(orderInfo.receipt, { payment: true })
+      await userModel.findByIdAndUpdate(userId, { cartData: {} })
+
+      res.json({ success: true, message: 'payment successful' })
+    } else {
+      res.josn({ success: false, message: 'payment fail' })
     }
-    
-    
   } catch (error) {
     console.log(error)
-    res.json({ success: false, message: error.message })  
+    res.json({ success: false, message: error.message })
   }
 }
 
@@ -118,7 +117,7 @@ const allOrders = async (req, res) => {
 
 const userOrders = async (req, res) => {
   try {
-    const { userId } = req.body
+    const { userId } = req
 
     const orders = await orderModel.find({ userId })
 

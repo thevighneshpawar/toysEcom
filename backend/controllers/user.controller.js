@@ -148,7 +148,7 @@ const refreshAccessToken = async (req, res) => {
 const getUserDetails = async (req, res) => {
   try {
     // better: get from auth middleware
-    const user = await userModel.findById(req, req.userId).select('-password')
+    const user = await userModel.findById(req.userId).select('-password')
     if (!user) return res.json({ success: false, msg: 'User not found' })
 
     res.json({ success: true, user })

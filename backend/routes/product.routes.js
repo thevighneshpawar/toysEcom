@@ -23,7 +23,7 @@ productRouter.post(
   addProduct
 )
 productRouter.post('/remove', adminAuth, removeProduct)
-productRouter.post('/single', singleProduct)
+productRouter.get('/:productId', singleProduct)
 productRouter.get('/list', listProducts)
 // Instead of a separate /filter, use this:
 productRouter.get('/', filterProducts)
