@@ -21,6 +21,10 @@ const userSchema = new Schema(
     cartData: {
       type: Object,
       default: {}
+    },
+
+    refreshToken: {
+      type: String
     }
   },
   {
