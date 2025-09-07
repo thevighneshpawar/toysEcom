@@ -121,6 +121,7 @@ const RegisterPage = () => {
                         </p>
                         <p className="text-gray-500 text-sm mt-2">
                             Ready to explore amazing toys? Let's get started! 🎈
+                            <p className="text-2xl text-green-400">if u are testing then go to sigin page u will get test credentails there</p>
                         </p>
                     </div>
 
