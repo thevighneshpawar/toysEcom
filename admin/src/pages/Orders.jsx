@@ -45,7 +45,7 @@ const Orders = ({ token }) => {
           headers: { token }
         }
       )
-      
+
 
       if (response.data.success) {
         await fetchallOrders()
@@ -72,7 +72,7 @@ const Orders = ({ token }) => {
 
 
           orders.map((order, index) => {
-            
+
             return (
               <div className='grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr]
               lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 border-2 border-gray-200 p-5 md:p-8
@@ -82,10 +82,15 @@ const Orders = ({ token }) => {
                 <img className='w-12' src={assets.parcel_icon} alt="" />
 
                 <div>
-
+                  { }
+                  {console.log(order)}
                   <div>
                     {
+
+
                       order.items.map((item, index) => {
+
+
                         if (index === order.items.length - 1) {
 
                           return <p className='py-0.5' key={index}>{item.name} X {item.quantity}
@@ -100,12 +105,12 @@ const Orders = ({ token }) => {
                       })
                     }
                   </div>
-                  <p className='mt-3 mb-2 font-medium'>{order.address.firstName + " " + order.address.lastName}</p>
+                  <p className='mt-3 mb-2 font-medium'>{order.shippingAddress.firstName + " " + order.shippingAddress.lastName}</p>
                   <div>
-                    <p>{order.address.street + ","}</p>
-                    <p>{order.address.city + ", " + order.address.state + ", " + order.address.country + ", " + order.address.zipcode}</p>
+                    <p>{order.shippingAddress.address + ","}</p>
+                    {/* <p>{order.address.city + ", " + order.address.state + ", " + order.address.country + ", " + order.address.zipcode}</p> */}
                   </div>
-                  <p>{order.address.phone}</p>
+                  <p>{order.shippingAddress.phone}</p>
 
                 </div>
 
@@ -121,7 +126,7 @@ const Orders = ({ token }) => {
 
 
                 <select
-                  onChange={(e)=>statusHandler(e,order._id)}
+                  onChange={(e) => statusHandler(e, order._id)}
                   value={order.status}
                   className='self-start p-2 font-semibold'>
                   <option value="Order Placed">Order Placed</option>

@@ -2,26 +2,20 @@ import jwt from 'jsonwebtoken'
 
 const adminAuth = async (req, res, next) => {
   try {
-    const token = req.cookies.accessToken // ✅ take token from cookies
+    const { token } = req.headers
     if (!token) {
-      return res
-        .status(401)
-        .json({ success: false, message: 'Not authorized, no token' })
+      return res.json({ success: false, message: 'Not authorized' })
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
-
-    // here we sign admin token differently => store role/email in payload
-    if (decoded.email !== process.env.ADMIN_EMAIL) {
-      return res
-        .status(403)
-        .json({ success: false, message: 'Not authorized as admin' })
+    const token_decode = jwt.verify(token, process.env.JWT_SECRET)
+    if (token_decode !== process.env.ADMIN_EMAIL + process.env.ADMIN_PASSWORD) {
+      return res.json({ success: false, message: 'Not authorized' })
     }
 
     next()
   } catch (error) {
     console.log(error)
-    return res.status(401).json({ success: false, message: error.message })
+    return res.json({ success: false, message: error.message })
   }
 }
 

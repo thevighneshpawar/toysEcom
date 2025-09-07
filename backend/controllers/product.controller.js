@@ -59,6 +59,8 @@ const addProduct = async (req, res) => {
 
 const listProducts = async (req, res) => {
   try {
+    console.log('called')
+
     const products = await productModel.find({})
 
     res.json({ success: true, products })
@@ -98,7 +100,8 @@ const singleProduct = async (req, res) => {
 // search filter
 const filterProducts = async (req, res) => {
   try {
-    const { category, subCategory, bestseller, search } = req.query
+    const { category, subCategory, bestseller, search, minPrice, maxPrice } =
+      req.query
 
     let filter = {}
 
@@ -116,9 +119,16 @@ const filterProducts = async (req, res) => {
 
     if (search) {
       filter.$or = [
-        { name: { $regex: search, $options: 'i' } } // case-insensitive
+        { name: { $regex: search, $options: 'i' } }
         // { description: { $regex: search, $options: 'i' } }
       ]
+    }
+
+    // Price filter
+    if (minPrice || maxPrice) {
+      filter.price = {}
+      if (minPrice) filter.price.$gte = Number(minPrice)
+      if (maxPrice) filter.price.$lte = Number(maxPrice)
     }
 
     const products = await productModel

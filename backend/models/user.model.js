@@ -18,6 +18,11 @@ const userSchema = new Schema(
       required: true
     },
 
+    cart: {
+      type: Array,
+      default: []
+    },
+
     cartData: {
       type: Object,
       default: {}

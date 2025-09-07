@@ -14,8 +14,8 @@ const Add = ({ token }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
-  const [category, setCategory] = useState("Ganpati");
-  const [subCategory, setSubCategory] = useState('Ganesha')
+  const [category, setCategory] = useState("softtoys");
+  const [subCategory, setSubCategory] = useState('Ganpati');
   const [bestseller, setBestseller] = useState(false);
   const [sizes, setSizes] = useState([]);
   const [adding, setAdding] = useState(false)
@@ -115,9 +115,9 @@ const Add = ({ token }) => {
         <div>
           <p className='mb-2'>Product Category</p>
           <select onChange={(e) => setCategory(e.target.value)} className='w-full px-3 py-2 mb-2' name="" id="">
-            <option value="soft">Soft toys</option>
-            <option value="hard">Hard toys</option>
-            <option value="Kids">Kids toys</option>
+            <option value="softtoys">Soft toys</option>
+            <option value="hardtoys">Hard toys</option>
+            <option value="Kidstoys">Kids toys</option>
           </select>
         </div>
 

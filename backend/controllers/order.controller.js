@@ -14,25 +14,27 @@ const currency = 'INR'
 const placeOrder = async (req, res) => {
   try {
     const { userId } = req
-    const { amount, items, address } = req.body
-    // console.log(userId);
+    const { items, shippingAddress, paymentMethod, totalAmount } = req.body
 
     const orderData = {
       userId,
       items,
-      address,
-      amount: Number(amount),
-      paymentMethod: 'COD',
-      payment: false,
-      date: Date.now()
+      shippingAddress,
+      totalAmount: Number(totalAmount),
+      paymentMethod: paymentMethod || 'COD',
+      paymentStatus: paymentMethod === 'cod' ? 'pending' : 'pending',
+      status: 'pending',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
 
     const newOrder = new orderModel(orderData)
     await newOrder.save()
 
-    await userModel.findByIdAndUpdate(userId, { cartData: {} })
+    // Clear user's cart
+    await userModel.findByIdAndUpdate(userId, { cart: [] })
 
-    res.json({ success: true, message: 'Order Placed' })
+    res.json({ success: true, message: 'Order Placed', order: newOrder })
   } catch (error) {
     console.log(error)
     res.json({ success: false, message: error.message })
@@ -106,6 +108,8 @@ const allOrders = async (req, res) => {
   try {
     const orders = await orderModel.find({})
 
+    console.log(orders)
+
     res.json({ success: true, orders })
   } catch (error) {
     console.log(error)
@@ -119,7 +123,7 @@ const userOrders = async (req, res) => {
   try {
     const { userId } = req
 
-    const orders = await orderModel.find({ userId })
+    const orders = await orderModel.find({ userId }).sort({ createdAt: -1 })
 
     res.json({ success: true, orders })
   } catch (error) {

@@ -1,6 +1,8 @@
 // src/App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
+import { CartProvider } from "./context/CartProvider";
+import { ToastProvider } from "./context/ToastProvider";
 
 // Layouts
 import Navbar from "./components/Navbar";
@@ -23,63 +25,68 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Navbar />
+      <ToastProvider>
+        <CartProvider>
 
-        <Routes>
-          {/* Auth */}
-          <Route path="/signin" element={<SigninPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <BrowserRouter>
+            <Navbar />
 
-          {/* Products */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/product/:id" element={<ProductDetailPage />} />
-          <Route path="/category/:categoryName" element={<CategoryPage />} />
-          <Route path="/search" element={<SearchPage />} />
+            <Routes>
+              {/* Auth */}
+              <Route path="/signin" element={<SigninPage />} />
+              <Route path="/register" element={<RegisterPage />} />
 
-          <Route
-            path="/cart"
-            element={
-              <ProtectedRoute>
-                <CartPage />
-              </ProtectedRoute>
-            }
-          />
+              {/* Products */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/product/:id" element={<ProductDetailPage />} />
+              <Route path="/category/:categoryName" element={<CategoryPage />} />
+              <Route path="/search" element={<SearchPage />} />
 
-          {/* Orders */}
-          <Route
-            path="/checkout"
-            element={
-              <ProtectedRoute>
-                <CheckoutPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/orders"
-            element={
-              <ProtectedRoute>
-                <OrdersPage />
-              </ProtectedRoute>
-            }
-          />
+              <Route
+                path="/cart"
+                element={
+                  <ProtectedRoute>
+                    <CartPage />
+                  </ProtectedRoute>
+                }
+              />
 
-          {/* Profile */}
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          />
+              {/* Orders */}
+              <Route
+                path="/checkout"
+                element={
+                  <ProtectedRoute>
+                    <CheckoutPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/orders"
+                element={
+                  <ProtectedRoute>
+                    <OrdersPage />
+                  </ProtectedRoute>
+                }
+              />
 
-          {/* Catch-all */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+              {/* Profile */}
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <ProfilePage />
+                  </ProtectedRoute>
+                }
+              />
 
-        <Footer />
-      </BrowserRouter>
+              {/* Catch-all */}
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+
+            <Footer />
+          </BrowserRouter>
+        </CartProvider>
+      </ToastProvider>
     </AuthProvider>
   );
 }

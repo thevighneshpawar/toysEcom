@@ -1,27 +1,38 @@
 import userModel from '../models/user.model.js'
+import productModel from '../models/product.model.js'
 
 // add to cart
-
-const addtocart = async (req, res) => {
+const addToCart = async (req, res) => {
   try {
     const { userId } = req
-    const { itemId, size } = req.body
+    const { productId, quantity } = req.body
 
     const userData = await userModel.findById(userId)
-    let cartData = await userData.cartData
+    const product = await productModel.findById(productId)
 
-    if (cartData[itemId]) {
-      if (cartData[itemId][size]) {
-        cartData[itemId][size] += 1
-      } else {
-        cartData[itemId][size] = 1
-      }
-    } else {
-      cartData[itemId] = {}
-      cartData[itemId][size] = 1
+    if (!product) {
+      return res.json({ success: false, message: 'Product not found' })
     }
 
-    await userModel.findByIdAndUpdate(userId, { cartData })
+    let cart = userData.cart || []
+    const existingItemIndex = cart.findIndex(
+      item => item.productId.toString() === productId
+    )
+
+    if (existingItemIndex > -1) {
+      cart[existingItemIndex].quantity += quantity || 1
+    } else {
+      cart.push({
+        productId: product._id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        category: product.category,
+        quantity: quantity || 1
+      })
+    }
+
+    await userModel.findByIdAndUpdate(userId, { cart })
 
     res.json({
       success: true,
@@ -36,23 +47,32 @@ const addtocart = async (req, res) => {
   }
 }
 
-//update cart
-
-const updatecart = async (req, res) => {
+// update cart
+const updateCart = async (req, res) => {
   try {
     const { userId } = req
-    const { itemId, size, quantity } = req.body
+    const { productId, quantity } = req.body
+    console.log(req)
 
     const userData = await userModel.findById(userId)
-    let cartData = await userData.cartData
+    let cart = userData.cart || []
 
-    cartData[itemId][size] = quantity
+    if (quantity === 0) {
+      cart = cart.filter(item => item.productId.toString() !== productId)
+    } else {
+      const itemIndex = cart.findIndex(
+        item => item.productId.toString() === productId
+      )
+      if (itemIndex > -1) {
+        cart[itemIndex].quantity = quantity
+      }
+    }
 
-    await userModel.findByIdAndUpdate(userId, { cartData })
+    await userModel.findByIdAndUpdate(userId, { cart })
 
     res.json({
       success: true,
-      message: 'cart updated'
+      message: 'Cart updated'
     })
   } catch (error) {
     console.log(error)
@@ -63,17 +83,17 @@ const updatecart = async (req, res) => {
   }
 }
 
-//get cart
-const getusercart = async (req, res) => {
+// get cart
+const getCart = async (req, res) => {
   try {
     const { userId } = req
 
     const userData = await userModel.findById(userId)
-    let cartData = await userData.cartData
+    const cart = userData.cart || []
 
     res.json({
       success: true,
-      cartData
+      cart: { items: cart }
     })
   } catch (error) {
     console.log(error)
@@ -84,4 +104,4 @@ const getusercart = async (req, res) => {
   }
 }
 
-export { addtocart, updatecart, getusercart }
+export { addToCart, updateCart, getCart }

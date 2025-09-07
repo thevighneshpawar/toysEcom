@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
     fetchMe()
   }, [])
 
-  console.log(user)
+  // console.log(user)
   return (
     <AuthContext.Provider
       value={{
