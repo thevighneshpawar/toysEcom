@@ -22,7 +22,7 @@ app.use(express.static('public'))
 app.use(cookieParser())
 
 const allowedOrigins = [
-  'https://ecommerce-frontend-jet-one.vercel.app',
+  'https://toys-ecom.vercel.app/',
   'https://ecommerce-mern-iota-opal.vercel.app',
   'http://localhost:5173',
   'http://localhost:5174'
