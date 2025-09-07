@@ -104,6 +104,7 @@ const SigninPage = () => {
                         <div className="space-y-2">
                             <label className="block text-sm font-bold text-gray-700 tracking-wide">
                                 Email Address
+                                <p className="text-sm">email:test@gmail.com</p>
                             </label>
                             <div className={`relative group transition-all duration-300 ${isEmailFocused ? 'transform scale-105' : ''
                                 }`}>
@@ -132,6 +133,7 @@ const SigninPage = () => {
                         <div className="space-y-2">
                             <label className="block text-sm font-bold text-gray-700 tracking-wide">
                                 Password
+                                <p className="text-sm">password:test@gmail.com</p>
                             </label>
                             <div className={`relative group transition-all duration-300 ${isPasswordFocused ? 'transform scale-105' : ''
                                 }`}>
